@@ -11,11 +11,10 @@ TODO continue to move even if selection has changedas
 [System.Serializable]
 public class MoveManager
 {
-    private GameObject selectedHero;
+    private GameObject m_SelectedHero;
 
     public void Setup()
     {
-        //CharacterAnimator = GetComponent<Animator>();
         //CharacterNavMeshAgent = GetComponent<NavMeshAgent>();
     }
 
@@ -28,11 +27,12 @@ public class MoveManager
             if (selection.CompareTag("Hero"))
             {
                 Debug.Log(selection + " selected");
-                selectedHero = selection;
+                m_SelectedHero = selection;
             }
-            else if (selectedHero)
+            else if (m_SelectedHero)
             {
-                selectedHero.GetComponent<NavMeshAgent>().destination = hit.point;
+                m_SelectedHero.GetComponent<NavMeshAgent>().destination = hit.point;
+                m_SelectedHero.GetComponent<Animator>().SetBool("bIsRunning", true);
                 //CharacterNavMeshAgent.isStopped = false;
             }
         }

@@ -4,22 +4,32 @@ using UnityEngine;
 
 public class PlayableHero : MonoBehaviour
 {
-    private float health;
+    private HealthUnit health;
     private bool selected;
     private float speedMod;
-    private Collider charCollider;
+    private GameManager model;
 
     // Start is called before the first frame update
     void Start()
     {
-        health = 100.0f;
+        health = GetComponent<HealthUnit>();
         selected = false;
         speedMod = 1.0f;
-        charCollider = GetComponentInChildren<Collider>();
+        model = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
     // Update is called once per frame
     void Update()
     {
+    }
+
+    void OnCollisionEnter(Collision col)
+    {
+        // A playable hero colliding with health station should heal
+        if (model.isHealthStation(col.gameObject))
+        {
+            Debug.Log(this.gameObject.name + " was just healed");
+            this.health.replenish();
+        }
     }
 }

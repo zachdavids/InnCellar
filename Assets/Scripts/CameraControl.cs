@@ -4,12 +4,12 @@ using UnityEngine;
 
 /*
 Moves and zooms the camera to accommodate all four characters
-TODO fix culling issue
+TODO add mouse scrolling
  */
 
 public class CameraControl : MonoBehaviour
 {
-    public float m_EdgeBuffer = 4.0f;
+    public float m_EdgeBuffer = 1.0f;
     public float m_SmoothTime = 0.2f;
     public float m_MinSize = 6.5f;
     public Transform[] m_Targets;
@@ -20,7 +20,8 @@ public class CameraControl : MonoBehaviour
 
     private void Awake()
     {
-        m_Camera = GetComponent<Camera>();
+        m_Camera = GetComponentInChildren<Camera>();
+        Refocus();
     }
 
     private void FixedUpdate()
