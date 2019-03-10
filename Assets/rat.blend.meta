@@ -1,0 +1,201 @@
+fileFormatVersion: 2
+guid: c74f08a97638563458174cd0c0bd7089
+ModelImporter:
+  serializedVersion: 23
+  fileIDToRecycleName:
+    100000: Armature
+    100002: Backbone
+    100004: Backbone_001
+    100006: Backbone_002
+    100008: Backbone_003
+    100010: BackLeg_L
+    100012: BackLeg_L_001
+    100014: BackLeg_L_002
+    100016: BackLeg_L_003
+    100018: BackLeg_R
+    100020: BackLeg_R_001
+    100022: BackLeg_R_002
+    100024: BackLeg_R_003
+    100026: Body
+    100028: Eyes
+    100030: FrontLeg_L
+    100032: FrontLeg_L_001
+    100034: FrontLeg_L_002
+    100036: FrontLeg_L_003
+    100038: FrontLeg_R
+    100040: FrontLeg_R_001
+    100042: FrontLeg_R_002
+    100044: FrontLeg_R_003
+    100046: Hair
+    100048: Head
+    100050: Head_0
+    100052: Hip
+    100054: Main
+    100056: Plane
+    100058: Plane_001
+    100060: //RootNode
+    100062: Tail
+    100064: Tail_001
+    100066: Tail_002
+    100068: Tail_003
+    100070: Teeth
+    400000: Armature
+    400002: Backbone
+    400004: Backbone_001
+    400006: Backbone_002
+    400008: Backbone_003
+    400010: BackLeg_L
+    400012: BackLeg_L_001
+    400014: BackLeg_L_002
+    400016: BackLeg_L_003
+    400018: BackLeg_R
+    400020: BackLeg_R_001
+    400022: BackLeg_R_002
+    400024: BackLeg_R_003
+    400026: Body
+    400028: Eyes
+    400030: FrontLeg_L
+    400032: FrontLeg_L_001
+    400034: FrontLeg_L_002
+    400036: FrontLeg_L_003
+    400038: FrontLeg_R
+    400040: FrontLeg_R_001
+    400042: FrontLeg_R_002
+    400044: FrontLeg_R_003
+    400046: Hair
+    400048: Head
+    400050: Head_0
+    400052: Hip
+    400054: Main
+    400056: Plane
+    400058: Plane_001
+    400060: //RootNode
+    400062: Tail
+    400064: Tail_001
+    400066: Tail_002
+    400068: Tail_003
+    400070: Teeth
+    2100000: Material_001__hair
+    2100002: Material
+    2100004: Teeth__rat-head
+    2100006: head_001__rat-head
+    2100008: head__rat-head
+    2100010: body__rat-body
+    2300000: Plane
+    2300002: Plane_001
+    3300000: Plane
+    3300002: Plane_001
+    4300000: Plane_001
+    4300002: Plane
+    4300004: Teeth
+    4300006: Hair
+    4300008: Eyes
+    4300010: Head
+    4300012: Body
+    7400000: Default Take
+    7400002: Attack_000
+    7400004: Attack_001
+    7400006: Attack_002
+    7400008: Attack_003
+    7400010: Attack_Begin
+    7400012: Attack_End
+    7400014: Die
+    7400016: Hit
+    7400018: Idle_000
+    7400020: Idle_001
+    7400022: Idle_002
+    7400024: Run
+    7400026: Stand
+    7400028: Walk
+    9500000: //RootNode
+    13700000: Body
+    13700002: Eyes
+    13700004: Hair
+    13700006: Head
+    13700008: Teeth
+  externalObjects: {}
+  materials:
+    importMaterials: 1
+    materialName: 0
+    materialSearch: 1
+    materialLocation: 1
+  animations:
+    legacyGenerateAnimations: 4
+    bakeSimulation: 0
+    resampleCurves: 1
+    optimizeGameObjects: 0
+    motionNodeName: 
+    rigImportErrors: 
+    rigImportWarnings: 
+    animationImportErrors: 
+    animationImportWarnings: 
+    animationRetargetingWarnings: 
+    animationDoRetargetingWarnings: 0
+    importAnimatedCustomProperties: 0
+    importConstraints: 0
+    animationCompression: 1
+    animationRotationError: 0.5
+    animationPositionError: 0.5
+    animationScaleError: 0.5
+    animationWrapMode: 0
+    extraExposedTransformPaths: []
+    extraUserProperties: []
+    clipAnimations: []
+    isReadable: 1
+  meshes:
+    lODScreenPercentages: []
+    globalScale: 1
+    meshCompression: 0
+    addColliders: 0
+    useSRGBMaterialColor: 1
+    importVisibility: 1
+    importBlendShapes: 1
+    importCameras: 1
+    importLights: 1
+    swapUVChannels: 0
+    generateSecondaryUV: 0
+    useFileUnits: 1
+    optimizeMeshForGPU: 1
+    keepQuads: 0
+    weldVertices: 1
+    preserveHierarchy: 0
+    indexFormat: 0
+    secondaryUVAngleDistortion: 8
+    secondaryUVAreaDistortion: 15.000001
+    secondaryUVHardAngle: 88
+    secondaryUVPackMargin: 4
+    useFileScale: 1
+    previousCalculatedGlobalScale: 1
+    hasPreviousCalculatedGlobalScale: 1
+  tangentSpace:
+    normalSmoothAngle: 60
+    normalImportMode: 0
+    tangentImportMode: 3
+    normalCalculationMode: 4
+    legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
+    blendShapeNormalImportMode: 1
+    normalSmoothingSource: 0
+  importAnimation: 1
+  copyAvatar: 0
+  humanDescription:
+    serializedVersion: 2
+    human: []
+    skeleton: []
+    armTwist: 0.5
+    foreArmTwist: 0.5
+    upperLegTwist: 0.5
+    legTwist: 0.5
+    armStretch: 0.05
+    legStretch: 0.05
+    feetSpacing: 0
+    rootMotionBoneName: 
+    hasTranslationDoF: 0
+    hasExtraRoot: 0
+    skeletonHasParents: 1
+  lastHumanDescriptionAvatarSource: {instanceID: 0}
+  animationType: 2
+  humanoidOversampling: 1
+  additionalBone: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 

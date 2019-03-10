@@ -33,9 +33,9 @@ public class OverlayUI : MonoBehaviour
     {
         materialsText.text = "Materials: " + model.getMaterials();
 
-        artisanHPText.text = "Artisan HP: " + artisan.GetComponent<HealthUnit>().getCurrentHealth();
-        bardHPText.text = "Bard HP: " + bard.GetComponent<HealthUnit>().getCurrentHealth();
-        thiefHPText.text = "Thief HP: " + thief.GetComponent<HealthUnit>().getCurrentHealth();
-        warriorHPText.text = "Warrior HP: " + warrior.GetComponent<HealthUnit>().getCurrentHealth();
+        artisanHPText.text = "Artisan HP: " + artisan.GetComponent<HealthController>().GetCurrentHealth();
+        bardHPText.text = "Bard HP: " + bard.GetComponent<HealthController>().GetCurrentHealth();
+        thiefHPText.text = "Thief HP: " + thief.GetComponent<HealthController>().GetCurrentHealth();
+        warriorHPText.text = "Warrior HP: " + warrior.GetComponent<HealthController>().GetCurrentHealth();
     }
 }

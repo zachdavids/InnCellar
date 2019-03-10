@@ -21,7 +21,8 @@ public class CameraControl : MonoBehaviour
     private void Awake()
     {
         m_Camera = GetComponentInChildren<Camera>();
-        Refocus();
+        transform.position = CalculateIdealPosition();
+        m_Camera.orthographicSize = CalculateIdealSize(transform.position);
     }
 
     private void FixedUpdate()

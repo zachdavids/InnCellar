@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class GameManager : MonoBehaviour
 {
-    private MoveManager m_MoveManager = new MoveManager();
-
     public GameObject Artisan;
     public GameObject Bard;
     public GameObject Thief;
@@ -13,21 +11,15 @@ public class GameManager : MonoBehaviour
 
     public GameObject[] HealthStations;
     public GameObject[] ToolStations;
-
+    public List<GameObject> Rats;
 
     void Start()
     {
-        m_MoveManager.Setup();
     }
 
     void Update()
     {
-        if (Input.GetButtonDown("Fire"))
-        {
-            m_MoveManager.Select();
-        }
     }
-
 
     public bool isHealthStation(GameObject obj)
     {
@@ -65,5 +57,10 @@ public class GameManager : MonoBehaviour
         }
 
         return -1;
+    }
+
+    public void NotifyRatKilled(GameObject rat)
+    {
+        this.Rats.Remove(rat);
     }
 }
