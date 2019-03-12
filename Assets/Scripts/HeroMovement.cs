@@ -5,7 +5,6 @@ using UnityEngine.AI;
 
 /*
 Handles selection and movement of heroes
-TODO multiple selection
 */
 
 public class HeroMovement : MonoBehaviour
@@ -32,6 +31,14 @@ public class HeroMovement : MonoBehaviour
         {
             Move();
         }
+        if (Input.GetButtonDown("Cancel"))
+        {
+            ClearSelection();
+        }
+        if (IsStopped())
+        {
+            m_CharacterAnimator.SetBool("bIsRunning", false);
+        }
     }
 
     private void Select()
@@ -43,10 +50,6 @@ public class HeroMovement : MonoBehaviour
             if (selection == this.gameObject)
             {
                 m_bSelected = true;
-            }
-            else
-            {
-                m_bSelected = false;
             }
         }
     }
@@ -72,5 +75,19 @@ public class HeroMovement : MonoBehaviour
                 m_AttackScript.SetTarget(null);
             }
         }
+    }
+
+    private bool IsStopped()
+    {
+        if (m_CharacterNavMeshAgent.remainingDistance <= m_CharacterNavMeshAgent.stoppingDistance)
+        {
+            return true;
+        }
+        return false;
+    }
+
+    private void ClearSelection()
+    {
+        m_bSelected = false;
     }
 }
