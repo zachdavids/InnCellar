@@ -10,9 +10,13 @@ public class ArtisanScript : MonoBehaviour
 {
     #region Attributes
 
+    [SerializeField] private Mesh RatTrapMesh1;
+    [SerializeField] private Mesh RatTrapMesh2;
+    [SerializeField] private Material RatTrapMaterial1;
+    [SerializeField] private Material RatTrapMaterial2;
+
     private static int _maxMaterials = 3;
     private GameManager _model;
-    private ResourceManager _resourceManager;
     private List<GameObject> _ratTraps;
 
     private int _materials;
@@ -38,13 +42,13 @@ public class ArtisanScript : MonoBehaviour
         collider.height = 6.20584f;
 
         GameObject cylinderMesh = new GameObject("Cylinder");
-        cylinderMesh.AddComponent<MeshFilter>().mesh = _resourceManager.RatTrapMesh1;
-        cylinderMesh.AddComponent<MeshRenderer>().material = _resourceManager.RatTrapMaterial1;
+        cylinderMesh.AddComponent<MeshFilter>().mesh = RatTrapMesh1;
+        cylinderMesh.AddComponent<MeshRenderer>().material = RatTrapMaterial1;
         cylinderMesh.transform.parent = newTrap.transform;
 
         GameObject spikeMesh = new GameObject("Spikes");
-        spikeMesh.AddComponent<MeshFilter>().mesh = _resourceManager.RatTrapMesh2;
-        spikeMesh.AddComponent<MeshRenderer>().material = _resourceManager.RatTrapMaterial2;
+        spikeMesh.AddComponent<MeshFilter>().mesh = RatTrapMesh2;
+        spikeMesh.AddComponent<MeshRenderer>().material = RatTrapMaterial2;
         spikeMesh.transform.parent = newTrap.transform;
 
         newTrap.transform.position = gameObject.transform.position;
@@ -74,7 +78,6 @@ public class ArtisanScript : MonoBehaviour
         _materials = _maxMaterials;
         _ratTraps = new List<GameObject>();
         _model = GameObject.Find("GameManager").GetComponent<GameManager>();
-        _resourceManager = GameObject.Find("ResourceManager").GetComponent<ResourceManager>();
     }
 
     // Update is called once per frame

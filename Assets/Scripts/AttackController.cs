@@ -33,7 +33,7 @@ public class AttackController : MonoBehaviour
 
         if (_attackSpeed < Time.time - _lastAttack)
         {
-            Debug.Log(this + " attacks " + _target + "(HP: " + _enemyHealth.GetCurrentHealth() + ") for " + _attackDamage + "damage");
+            Debug.Log(this + " attacks " + _target + "(HP: " + _enemyHealth.currentHealth + ") for " + _attackDamage + "damage");
             this.transform.forward = _target.transform.position;
             _animator.SetBool("bIsAttacking", true);
             _enemyHealth.SustainDamage(_attackDamage);

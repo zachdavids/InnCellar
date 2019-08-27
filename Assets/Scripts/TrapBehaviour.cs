@@ -4,32 +4,28 @@ using UnityEngine;
 
 public class TrapBehaviour : MonoBehaviour
 {
-    private ArtisanScript creator;
+    private ArtisanScript _creator;
     
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    #region Monobehaviour Functions
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.GetComponent<RatBehaviour>() != null)
+        if (col.gameObject.GetComponent<RatBehaviour>())
         {
             Debug.Log("A rat has touched a rat trap!");
-            if (creator != null) { creator.NotifyTrapDestroyed(this.gameObject); }
-            GameObject.Destroy(this.gameObject);
+            if (_creator != null)
+            {
+                _creator.NotifyTrapDestroyed(gameObject);
+            }
+
+            GameObject.Destroy(gameObject);
         }
     }
 
     public void SetCreator(ArtisanScript artisan)
     {
-        creator = artisan;
+        _creator = artisan;
     }
+
+    #endregion
 }

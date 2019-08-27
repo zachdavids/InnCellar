@@ -4,21 +4,25 @@ using UnityEngine;
 
 public class RatBehaviour : MonoBehaviour
 {
-    private GameManager gameManager;
-    private HealthController m_HealthController;
+    #region Attributes
 
-    // Start is called before the first frame update
+    private GameManager _gameManager;
+    private HealthController _healthController;
+
+    #endregion
+
+    #region Monobehaviour Functions
+
     void Start()
     {
-        this.gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
-        m_HealthController = GetComponent<HealthController>();
+        _gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
+        _healthController = GetComponent<HealthController>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        //TODO real death
-        if (m_HealthController.GetCurrentHealth() == 0)
+        if (_healthController.currentHealth == 0)
         {
             Debug.Log(this + " has been killed.");
             GetComponent<Rigidbody>().AddForce(new Vector3(0, 10, 0));
@@ -27,11 +31,13 @@ public class RatBehaviour : MonoBehaviour
 
     void OnCollisionEnter(Collision col)
     {
-        if(col.gameObject.GetComponent<TrapBehaviour>() != null)
+        if(col.gameObject.GetComponent<TrapBehaviour>())
         {
             Debug.Log("Rat killed by a trap!");
-            gameManager.NotifyRatKilled(this.gameObject);
-            GameObject.Destroy(this.gameObject);
+            _gameManager.NotifyRatKilled(gameObject);
+            GameObject.Destroy(gameObject);
         }
     }
+
+    #endregion
 }

@@ -4,52 +4,56 @@ using UnityEngine;
 
 public class PlayableHero : MonoBehaviour
 {
-    private HealthController health;
-    private bool selected;
-    private float speedMod;
-    private GameManager model;
-    private float damageCooldown = 0;
+    #region Attributes
 
-    // Start is called before the first frame update
+    private bool _isSelected;
+    private float _speedModifier;
+    private float _damageCooldown = 0;
+    private GameManager model;
+    private HealthController health;
+
+    #endregion
+
+    #region Monobehaviour Functions
+
     void Start()
     {
+        _isSelected = false;
+        _speedModifier = 1.0f;
         health = GetComponent<HealthController>();
-        selected = false;
-        speedMod = 1.0f;
         model = GameObject.Find("GameManager").GetComponent<GameManager>();
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(this.damageCooldown > 0)
+        if(_damageCooldown > 0)
         {
-            float updatedCooldown = this.damageCooldown - Time.deltaTime;
+            float updatedCooldown = _damageCooldown - Time.deltaTime;
             if (updatedCooldown < 0) { updatedCooldown = 0; }
-            this.damageCooldown = updatedCooldown;
+            _damageCooldown = updatedCooldown;
         }
     }
 
     void OnCollisionEnter(Collision col)
     {
-        // A playable hero colliding with health station should heal
         if (model.isHealthStation(col.gameObject))
         {
-            Debug.Log(this.gameObject.name + " was just healed");
-            this.health.Replenish();
+            health.Replenish();
         }
     }
 
     void OnCollisionStay(Collision col)
     {
-        if (col.gameObject.GetComponent<RatBehaviour>() != null)
+        if (col.gameObject.GetComponent<RatBehaviour>())
         {
-            if (this.damageCooldown == 0)
+            if (_damageCooldown == 0)
             {
                 Debug.Log("A hero sustained damage!");
-                this.health.SustainDamage(20);
-                this.damageCooldown = 2;
+                health.SustainDamage(20);
+                _damageCooldown = 2;
             }
         }
     }
+
+    #endregion
 }

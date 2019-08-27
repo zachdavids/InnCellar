@@ -4,12 +4,14 @@ using UnityEngine;
 
 public class DrawMineRails : MonoBehaviour
 {
+    [SerializeField] private Mesh RailMesh;
+    [SerializeField] private Material RailMaterial;
+
     private List<GameObject> _rails;
 
     void Start()
     {
         HermiteSpline spline = this.gameObject.GetComponent<HermiteSpline>();
-        ResourceManager resourceManager = GameObject.Find("ResourceManager").GetComponent<ResourceManager>();
 
         _rails = new List<GameObject>();
 
@@ -17,8 +19,8 @@ public class DrawMineRails : MonoBehaviour
         {
             GameObject rail = new GameObject("MineRail");
 
-            rail.AddComponent<MeshFilter>().mesh = resourceManager.RailMesh;
-            rail.AddComponent<MeshRenderer>().material = resourceManager.RailMaterial;
+            rail.AddComponent<MeshFilter>().mesh = RailMesh;
+            rail.AddComponent<MeshRenderer>().material = RailMaterial;
 
             Transform railTransform = rail.transform;
             railTransform.localScale = 0.15f * this.transform.localScale;

@@ -5,59 +5,61 @@ using UnityEngine;
 public class HealthController: MonoBehaviour
 {
     [Header("Health Settings")]
-    public float m_MaxHealth = 80;
+    [SerializeField] private float _maxHealth = 80;
 
-    private float m_CurrentHealth;
-
-    public float GetCurrentHealth() { return m_CurrentHealth; }
+    private float _currentHealth;
+    public float currentHealth
+    {
+        get { return _currentHealth; }
+    }
 
     void Start()
     {
-        m_CurrentHealth = m_MaxHealth;
+        _currentHealth = _maxHealth;
     }
 
     public void Heal(float amount)
     {
-        if (m_CurrentHealth + amount > m_MaxHealth)
+        if (_currentHealth + amount > _maxHealth)
         {
-            m_CurrentHealth = m_MaxHealth;
+            _currentHealth = _maxHealth;
         }
         else
         {
-            m_CurrentHealth += amount;
+            _currentHealth += amount;
         }
     }
 
     public void SustainDamage(float amount)
     {
-        if (m_CurrentHealth - amount < 0)
+        if (_currentHealth - amount < 0)
         {
-            m_CurrentHealth = 0;
+            _currentHealth = 0;
         }
         else
         {
-            m_CurrentHealth -= amount;
+            _currentHealth -= amount;
         }
     }
 
     public void Replenish()
     {
-        m_CurrentHealth = m_MaxHealth;
+        _currentHealth = _maxHealth;
     }
 
     public void SetCurrentHealth(float amount)
     {
         if (amount < 0)
         {
-            m_CurrentHealth = 0;
+            _currentHealth = 0;
         }
-        else if (amount > this.m_MaxHealth)
+        else if (amount > this._maxHealth)
         {
-            m_CurrentHealth = m_MaxHealth;
+            _currentHealth = _maxHealth;
         }
         else
         {
-            m_CurrentHealth = amount;
+            _currentHealth = amount;
         }
     }
 }

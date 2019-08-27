@@ -4,80 +4,90 @@ using UnityEngine;
 
 public class Minecart : MonoBehaviour
 {
-    public GameObject MineTrack; // The track (spline object) to which this minecart is bound;
-    public float initialTrackLocation;
-    public bool broken;
-    private float velocity; // steps per second (float from 0 to 1 representing portion of spline traversed per second)
-    private float currentTrackPosition; // spline steps (0 to 1)
-    private bool moving;
-    private bool returning;
-    private GameObject CarryingPlayer;
+    #region Attributes
 
+    [SerializeField] private GameObject _track;
+    [SerializeField] private bool _broken;
 
-    // Start is called before the first frame update
+    private bool _isMoving;
+    private bool _isReturning;
+    private float _velocity;
+    private float _currentPosition;
+    private GameObject _mountedPlayer;
+
+    #endregion
+
+    #region Monobehaviour Functions
+
     void Start()
     {
-        HermiteSpline spline = MineTrack.GetComponent<HermiteSpline>();
-        currentTrackPosition = initialTrackLocation;
-        this.transform.position = spline.InterpolateSpline(currentTrackPosition);
-        this.transform.LookAt(this.transform.position + spline.GetTangeantAtStep(initialTrackLocation), Vector3.up);
-        this.transform.Rotate(270, 0, 0);
-        CarryingPlayer = null;
+        _currentPosition = 0;
+
+        HermiteSpline spline = _track.GetComponent<HermiteSpline>();
+        transform.position = spline.InterpolateSpline(_currentPosition);
+        transform.LookAt(transform.position + spline.GetTangeantAtStep(0), Vector3.up);
+        transform.Rotate(270, 0, 0);
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (moving)
+        if (_isMoving)
         {
-            HermiteSpline spline = MineTrack.GetComponent<HermiteSpline>();
+            HermiteSpline spline = _track.GetComponent<HermiteSpline>();
             float buildupAccel = 0.02f;
-            float maxVelocity = 0.25f;
-            if (returning) maxVelocity = 0.1f;
-            if (velocity < maxVelocity)
+            float max_velocity = 0.25f;
+
+            if (_isReturning)
             {
-                velocity += buildupAccel;
+                max_velocity = 0.1f;
             }
 
-            if(currentTrackPosition > 0.7f && !returning)
+            if (_velocity < max_velocity)
             {
-                velocity = maxVelocity * ((1.0f - currentTrackPosition) / 0.2f);
+                _velocity += buildupAccel;
             }
 
-            if(currentTrackPosition < 0.2f && returning)
+            if (_currentPosition > 0.7f && !_isReturning)
             {
-                velocity = maxVelocity * (currentTrackPosition / 0.2f);
+                _velocity = max_velocity * ((1.0f - _currentPosition) / 0.2f);
+            }
+
+            if (_currentPosition < 0.2f && _isReturning)
+            {
+                _velocity = max_velocity * (_currentPosition / 0.2f);
             }
 
 
-            if (returning)
+            if (_isReturning)
             {
-                currentTrackPosition -= velocity * Time.deltaTime;
+                _currentPosition -= _velocity * Time.deltaTime;
             }
             else
             {
-                currentTrackPosition += velocity * Time.deltaTime;
+                _currentPosition += _velocity * Time.deltaTime;
             }
 
-            if(currentTrackPosition >= 0.995f && velocity < buildupAccel)
+            if (_currentPosition >= 0.995f && _velocity < buildupAccel)
             {
-                currentTrackPosition = 0.995f;
-                Arrived();
+                _currentPosition = 0.995f;
+                HasArrived();
             }
 
-            if(currentTrackPosition <= 0.005f && velocity < buildupAccel)
+            if (_currentPosition <= 0.005f && _velocity < buildupAccel)
             {
-                currentTrackPosition = 0.0f;
-                Returned();
+                _currentPosition = 0.0f;
+                HasReturned();
             }
 
-            this.transform.position = spline.InterpolateSpline(currentTrackPosition);
-            this.transform.LookAt(this.transform.position + spline.GetTangeantAtStep(currentTrackPosition), Vector3.up);
-            this.transform.Rotate(270, 0, 0);
-            if (CarryingPlayer != null)
+            transform.position = spline.InterpolateSpline(_currentPosition);
+            transform.LookAt(transform.position + spline.GetTangeantAtStep(_currentPosition), Vector3.up);
+            transform.Rotate(270, 0, 0);
+
+            if (_mountedPlayer)
             {
-                this.CarryingPlayer.transform.position = this.transform.position;
-                this.CarryingPlayer.transform.LookAt(this.transform.position + spline.GetTangeantAtStep(currentTrackPosition), Vector3.up);
+                _mountedPlayer.transform.position = transform.position;
+                _mountedPlayer.transform.LookAt(transform.position + spline.GetTangeantAtStep(_currentPosition), Vector3.up);
             }
         }
         else
@@ -86,64 +96,69 @@ public class Minecart : MonoBehaviour
             {
                 GameManager manager = GameObject.Find("GameManager").GetComponent<GameManager>();
                 float distanceThreshold = 7.0f;
-                if(Vector3.Distance(manager.Artisan.transform.position, this.transform.position) < distanceThreshold)
+
+                if (Vector3.Distance(manager.Artisan.transform.position, transform.position) < distanceThreshold)
                 {
                     Debug.Log("Artisan can mount");
                     Board(manager.Artisan);
                 }
-                else if(Vector3.Distance(manager.Bard.transform.position, this.transform.position) < distanceThreshold)
+                else if (Vector3.Distance(manager.Bard.transform.position, transform.position) < distanceThreshold)
                 {
                     Debug.Log("Bard can mount");
                     Board(manager.Bard);
                 }
-                else if(Vector3.Distance(manager.Warrior.transform.position, this.transform.position) < distanceThreshold)
+                else if (Vector3.Distance(manager.Warrior.transform.position, transform.position) < distanceThreshold)
                 {
                     Debug.Log("Warrior can mount");
                     Board(manager.Warrior);
                 }
-                else if(Vector3.Distance(manager.Thief.transform.position, this.transform.position) < distanceThreshold)
+                else if (Vector3.Distance(manager.Thief.transform.position, transform.position) < distanceThreshold)
                 {
                     Debug.Log("Thief can mount");
                     Board(manager.Thief);
                 }
-
             }
         }
-
-
     }
 
-    private void Arrived()
+    #endregion
+
+    #region Minecart Logic
+
+    private void HasArrived()
     {
-        returning = true;
-        velocity = 0.0f;
-        if(CarryingPlayer != null)
+        _isReturning = true;
+        _velocity = 0.0f;
+
+        if (_mountedPlayer)
         {
-            HermiteSpline spline = MineTrack.GetComponent<HermiteSpline>();
-            //CarryingPlayer.transform.position = spline.InterpolateSpline(1.0f) + spline.GetTangeantAtStep(0.98f);
-            CarryingPlayer.GetComponent<HeroMovement>().GotOffMinecart(spline.InterpolateSpline(1.0f) + spline.GetTangeantAtStep(0.98f));
-            CarryingPlayer = null;
+            HermiteSpline spline = _track.GetComponent<HermiteSpline>();
+            //_mountedPlayer.transform.position = spline.InterpolateSpline(1.0f) + spline.GetTangeantAtStep(0.98f);
+            _mountedPlayer.GetComponent<HeroMovement>().GotOffMinecart(spline.InterpolateSpline(1.0f) + spline.GetTangeantAtStep(0.98f));
+            _mountedPlayer = null;
         }
     }
 
-    private void Returned()
+    private void HasReturned()
     {
-        moving = false;
-        returning = false;
-        velocity = 0.0f;
+        _isMoving = false;
+        _isReturning = false;
+        _velocity = 0.0f;
     }
 
     private void Board(GameObject character)
     {
-        moving = true;
-        velocity = 0.0f;
-        CarryingPlayer = character;
-        CarryingPlayer.GetComponent<HeroMovement>().BoardedMinecart();
+        _isMoving = true;
+        _velocity = 0.0f;
+        _mountedPlayer = character;
+        _mountedPlayer.GetComponent<HeroMovement>().BoardedMinecart();
     }
 
     private void TestStart()
     {
-        moving = true;
-        velocity = 0.0f;
+        _isMoving = true;
+        _velocity = 0.0f;
     }
+
+    #endregion
 }
