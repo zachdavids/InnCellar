@@ -90,4 +90,18 @@ public class HeroMovement : MonoBehaviour
     {
         m_bSelected = false;
     }
+
+    // Special handling may be required when boarding a minecart and getting off a minecart to ensure it doesn't trip up the state of the nav mesh. This can be handled here.
+    // The following functions (BoardedMinecart and GetOffMinecart) will be called automatically in the appropriate situations
+    public void BoardedMinecart()
+    {
+        m_CharacterAnimator.SetBool("bIsRunning", false);
+    }
+
+    public void GotOffMinecart(Vector3 expectedArrivalPosition)
+    {
+        m_CharacterNavMeshAgent.destination = expectedArrivalPosition;
+        m_CharacterNavMeshAgent.Warp(expectedArrivalPosition);
+        m_CharacterAnimator.SetBool("bIsRunning", true);
+    }
 }
