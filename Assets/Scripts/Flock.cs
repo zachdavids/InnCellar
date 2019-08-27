@@ -3,36 +3,26 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/*
+Flocking related variable and states for the warrior's wolves
+ */
+
 public class Flock : MonoBehaviour
 {
-    public FlockManager m_FlockManager;
+    #region Attributes
 
-    private float m_Speed;
-    private bool m_IsTurning;
+    private float _speed;
+    private bool _isTurning;
+    private FlockManager _flockManager; 
 
-    public void Start()
+    public FlockManager flockManager
     {
-        m_Speed = Random.Range(m_FlockManager.m_MinSpeed,
-                                m_FlockManager.m_MaxSpeed);
+        set { _flockManager = value; }
     }
 
-    public void Update()
-    {
-        Bounds boundary = new Bounds(m_FlockManager.transform.position, m_FlockManager.m_SpawnBoundary * 2);
-        m_IsTurning = !boundary.Contains(transform.position) ? true : false;
+    #endregion
 
-        if (m_IsTurning)
-        {
-            Vector3 direction = m_FlockManager.transform.position - transform.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction),
-                m_FlockManager.m_RotationSpeed * Time.deltaTime);
-        }
-        else
-        {
-            FlockBehaviour();
-            transform.Translate(0, 0, Time.deltaTime * m_Speed);
-        }
-    }
+    #region Flock Logic
 
     private void FlockBehaviour()
     {
@@ -40,21 +30,21 @@ public class Flock : MonoBehaviour
         float average_speed = 0.0f;
         Vector3 average_position = Vector3.zero;
         Vector3 average_avoid = Vector3.zero;
-        GameObject[] flock = m_FlockManager.m_Fish;
+        GameObject[] flock = _flockManager.animals;
 
-        foreach(GameObject fish in flock)
+        foreach (GameObject animal in flock)
         {
-            if (fish == gameObject) { continue; }
+            if (animal == gameObject) { continue; }
 
-            float distance = Vector3.Distance(fish.transform.position, transform.position);
-            if (distance <= m_FlockManager.m_NeighbourRange)
+            float distance = Vector3.Distance(animal.transform.position, transform.position);
+            if (distance <= _flockManager.neighbourRange)
             {
-                if (distance < m_FlockManager.m_AvoidRange)
+                if (distance < _flockManager.avoidRange)
                 {
-                    average_avoid += (fish.transform.position - transform.position);
+                    average_avoid += (animal.transform.position - transform.position);
                 }
-                average_position += fish.transform.position;
-                average_speed += fish.GetComponent<Flock>().m_Speed;
+                average_position += animal.transform.position;
+                average_speed += animal.GetComponent<Flock>()._speed;
                 num_neightbours++;
             }
         }
@@ -62,14 +52,52 @@ public class Flock : MonoBehaviour
         if (num_neightbours > 0)
         {
             average_position /= num_neightbours;
-            average_position.x += m_FlockManager.m_TargetPosition.x - transform.position.x;
+            average_position.x += _flockManager.targetPosition.x - transform.position.x;
             average_position.y = transform.position.y;
-            average_position.z += m_FlockManager.m_TargetPosition.z - transform.position.z;
+            average_position.z += _flockManager.targetPosition.z - transform.position.z;
             average_speed /= num_neightbours;
 
             Vector3 direction = average_position + average_avoid - transform.position;
-            transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), 
-                m_FlockManager.m_RotationSpeed * Time.deltaTime);
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation, 
+                Quaternion.LookRotation(direction), 
+                _flockManager.rotationSpeed * Time.deltaTime
+            );
         }
-    }   
+    }
+
+    #endregion
+
+    #region Monobehaviour Functions
+
+    public void Start()
+    {
+        _speed = Random.Range(_flockManager.minSpeed, _flockManager.maxSpeed);
+    }
+
+    public void Update()
+    {
+        Transform flockTransform = transform;
+        Transform flockManagerTransform = _flockManager.transform;
+
+        Bounds boundary = new Bounds(flockManagerTransform.position, _flockManager.spawnBoundary * 2);
+        _isTurning = !boundary.Contains(flockTransform.position) ? true : false;
+
+        if (_isTurning)
+        {
+            Vector3 direction = flockManagerTransform.position - flockTransform.position;
+            flockTransform.rotation = Quaternion.Slerp(
+                flockTransform.rotation,
+                Quaternion.LookRotation(direction),
+                _flockManager.rotationSpeed * Time.deltaTime
+            );
+        }
+        else
+        {
+            FlockBehaviour();
+            flockTransform.Translate(0, 0, Time.deltaTime * _speed);
+        }
+    }
+
+    #endregion
 }

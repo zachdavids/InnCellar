@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour
         ArtisanScript art = Artisan.GetComponent<ArtisanScript>();
         if (art != null)
         {
-                return art.getMaterials();
+                return art.materials;
         }
 
         return -1;

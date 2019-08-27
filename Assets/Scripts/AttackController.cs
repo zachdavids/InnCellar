@@ -10,51 +10,67 @@ Controls attack related variable and states
 
 public class AttackController : MonoBehaviour
 {
-    [Header("Attack Settings")]
-    public float m_AttackDamage = 15;
-    public float m_AttackSpeed = 2;
-    public float m_AttackRange = 3;
+    #region Attributes
 
-    private float m_LastAttack = 0;
-    private GameObject m_Target;
-    private NavMeshAgent m_CharacterNavMeshAgent;
-    private Animator m_CharacterAnimator;
-    private HealthController m_EnemyHealthUnit;
+    [Header("Attack Settings")]
+    [SerializeField] private float _attackDamage = 15;
+    [SerializeField] private float _attackSpeed = 2;
+    [SerializeField] private float _attackRange = 3;
+
+    private float _lastAttack;
+    private GameObject _target;
+    private NavMeshAgent _navMeshAgent;
+    private Animator _animator;
+    private HealthController _enemyHealth;
+
+    #endregion
+
+    #region Attack Logic
+
+    private void Attack()
+    {
+        if (_navMeshAgent.remainingDistance > _attackRange) return;
+
+        if (_attackSpeed < Time.time - _lastAttack)
+        {
+            Debug.Log(this + " attacks " + _target + "(HP: " + _enemyHealth.GetCurrentHealth() + ") for " + _attackDamage + "damage");
+            this.transform.forward = _target.transform.position;
+            _animator.SetBool("bIsAttacking", true);
+            _enemyHealth.SustainDamage(_attackDamage);
+            _lastAttack = Time.time;
+        }
+        else
+        {
+            _animator.SetBool("bIsAttacking", false);
+        }
+    }
 
     public void SetTarget(GameObject target)
     {
-        m_Target = target;
-        if (!target) { return; }
-        m_EnemyHealthUnit = m_Target.GetComponent<HealthController>();
+        if (!target) return;
+
+        _target = target;
+        _enemyHealth = _target.GetComponent<HealthController>();
     }
+
+    #endregion
+
+    #region Monobehaviour Functions
 
     void Start()
     {
-        m_CharacterNavMeshAgent = GetComponent<NavMeshAgent>();
-        m_CharacterAnimator = GetComponent<Animator>();
+        _lastAttack = 0;
+
+        _navMeshAgent = GetComponent<NavMeshAgent>();
+        _animator = GetComponent<Animator>();
     }
 
     void Update()
     {
-        if (!m_Target) { return; }
-        Attack();   
+        if (!_target) return;
+
+        Attack();
     }
 
-    private void Attack()
-    {
-        if (m_CharacterNavMeshAgent.remainingDistance > m_AttackRange) { return; }
-
-        if (m_AttackSpeed < Time.time - m_LastAttack)
-        {
-            Debug.Log(this + " attacks " + m_Target + "(HP: " + m_EnemyHealthUnit.GetCurrentHealth() + ") for " + m_AttackDamage + "damage");
-            this.transform.forward = m_Target.transform.position;
-            m_EnemyHealthUnit.SustainDamage(m_AttackDamage);
-            m_LastAttack = Time.time;
-            m_CharacterAnimator.SetBool("bIsAttacking", true);
-        }
-        else
-        {
-            m_CharacterAnimator.SetBool("bIsAttacking", false);
-        }
-    }
+    #endregion
 }

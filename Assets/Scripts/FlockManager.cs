@@ -3,45 +3,92 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
+/*
+Controls Flock related variable and states
+ */
+
 public class FlockManager : MonoBehaviour
 {
+    #region Attributes
+
     [Header("Setup")]
-    public int m_NumFish;
-    public GameObject m_FishPrehab;
-    public GameObject[] m_Fish;
-    public Vector3 m_SpawnBoundary = new Vector3(5, 5, 5);
-    public Vector3 m_TargetPosition;
+    [SerializeField] private int _numAnimals = 4;
+    [SerializeField] private GameObject _animalPrehab;
+    [SerializeField] private Vector3 _spawnBoundary = new Vector3(5, 5, 5);
+    public Vector3 spawnBoundary
+    {
+        get { return _spawnBoundary; }
+    }
 
     [Header("Settings")]
-    [Range(0.0f, 5.0f)]
-    public float m_MinSpeed;
-    [Range(0.0f, 5.0f)]
-    public float m_MaxSpeed;
-    [Range(1.0f, 10.0f)]
-    public float m_NeighbourRange;
-    [Range(1.0f, 10.0f)]
-    public float m_AvoidRange;
-    [Range(0.0f, 5.0f)]
-    public float m_RotationSpeed;
+    [SerializeField, Range(0.0f, 5.0f)] private float _minSpeed;
+    public float minSpeed
+    {
+        get { return _minSpeed; }
+    }
+
+    [SerializeField, Range(0.0f, 5.0f)] private float _maxSpeed;
+    public float maxSpeed
+    {
+        get { return _maxSpeed; }
+    }
+
+    [SerializeField, Range(1.0f, 10.0f)] private float _neighbourRange;
+    public float neighbourRange
+    {
+        get { return _neighbourRange; }
+    }
+
+
+    [SerializeField, Range(1.0f, 10.0f)] private float _avoidRange;
+    public float avoidRange
+    {
+        get { return _avoidRange; }
+    }
+
+    [SerializeField, Range(0.0f, 5.0f)] private float _rotationSpeed;
+    public float rotationSpeed
+    {
+        get { return _rotationSpeed; }
+    }
+
+    private Vector3 _targetPosition;
+    public Vector3 targetPosition
+    {
+        get { return _targetPosition; }
+    }
+
+    private GameObject[] _animals;
+    public GameObject[] animals
+    {
+        get { return _animals; }
+    }
+
+    #endregion
+
+    #region Monobehaviour Functions
 
     public void Start()
     {
-        m_Fish = new GameObject[m_NumFish];
-        for (int i = 0; i != m_NumFish; i++)
+        _animals = new GameObject[_numAnimals];
+        for (int i = 0; i != _numAnimals; i++)
         {
-            Vector3 position = transform.position + new Vector3(Random.Range(-m_SpawnBoundary.x, m_SpawnBoundary.x),
+            Vector3 position = transform.position + new Vector3(Random.Range(-_spawnBoundary.x, _spawnBoundary.x),
                                                                 transform.position.y,
-                                                                Random.Range(-m_SpawnBoundary.z, m_SpawnBoundary.z));
-            m_Fish[i] = (GameObject)Instantiate(m_FishPrehab, position, Quaternion.identity);
-            m_Fish[i].GetComponent<Flock>().m_FlockManager = this;
+                                                                Random.Range(-_spawnBoundary.z, _spawnBoundary.z));
+
+            _animals[i] = (GameObject)Instantiate(_animalPrehab, position, Quaternion.identity);
+            _animals[i].GetComponent<Flock>().flockManager = this;
         }
-        m_TargetPosition = transform.position;
+        _targetPosition = transform.position;
     }
 
     public void Update()
     {
-        m_TargetPosition = transform.position + new Vector3(Random.Range(-m_SpawnBoundary.x, m_SpawnBoundary.x),
+        _targetPosition = transform.position + new Vector3(Random.Range(-_spawnBoundary.x, _spawnBoundary.x),
                                                             transform.position.y,
-                                                            Random.Range(-m_SpawnBoundary.z, m_SpawnBoundary.z));
+                                                            Random.Range(-_spawnBoundary.z, _spawnBoundary.z));
     }
+
+    #endregion
 }
