@@ -191,12 +191,12 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Rabbit_1__Rabbit1_png
-    second: {fileID: 2100000, guid: c4100640635332b419d08fe285f7dea7, type: 2}
+    second: {fileID: 2100000, guid: 11f39b2ab10a2184d84e62f1906a4a05, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: Rabbit_Eyes__Rabbit_Eyes
-    second: {fileID: 2100000, guid: f382950453b43ee45a2d558d9fa1fde2, type: 2}
+    second: {fileID: 2100000, guid: d63f66543778067409d35df0810847bf, type: 2}
   materials:
     importMaterials: 1
     materialName: 0
